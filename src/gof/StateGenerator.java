@@ -1,26 +1,15 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-
 package gof;
 
 
 /**
- * Represents the rules for a survival for the state of the cells (both alive or dead).
- * @author Yoon Jin Park
- * @version 2.3
- * @since 1.0
+ * Represents the survival rules for a cell state (both alive or dead).
  */
 class StateGenerator
 {
     /**
      * Generates a new generation of collective states with the rules for a survival
      * with the original generation.
-     * @param generation the collection of the state of the cells (to be specific, alive or dead)
-     * @param side the width and height of grid cells on a game board
-     * @return  a new collection of the state of the cells after applying the rules for a survival
+     
      */
     static int[][] stateGenerator(int[][] generation, int side)
       {
@@ -45,13 +34,11 @@ class StateGenerator
       }
 
     /**
-     * Returns the number of the states that are alive in adjacent cells.
-     * Adjacent cells mean surrounding eight cells immediate to a specific cell.
-     * @param grid the generation of collective cells, the state of which neighbours (adjacent cells)
+     * Returns the number alive neighbors of a cell
+     * @param grid -- the generation of collective cells, the state of which neighbors (adjacent cells)
      *             need to be counted
-     * @param i the position of height coordinate
-     * @param j the position of width coordinate
-     * @return the number of the states that are alive in adjacent cells
+     * @param i -- the position of height coordinate
+     * @param j -- the position of width coordinate
      */
     private static int countAliveNeighbours(int grid[][], int i, int j)
     {
@@ -73,33 +60,21 @@ class StateGenerator
     /**
      * Evaluates and returns whether a specific cell can survive or not with the rules.
      * The rules of a survival consist of the four conditions below:
-     * <p>
-     * Any live cell with fewer than two live neighbors dies, as if by under population.
-     * </p>
-     * <p>
-     * Any live cell with more than three live neighbors dies, as if by overpopulation.
-     * </p>
-     * <p>
-     * Any live cell with two or three live neighbors lives on to the next generation where it is already alive.
-     * </p>
-     * <p>
-     * Any dead cell with exactly three live neighbors becomes a live cell, as if by reproduction.
-     * </p>
-     * @param aliveNeighbours the number of the states that are alive in adjacent cells
-     * @param alive the state of a specific position of a cell (alive or dead)
-     * @return a new state of a specific position of a cell (alive or dead)
-     * after the rules for a survival is applied.
+     *Any live cell with fewer than two live neighbors dies from isolation.
+     *Any live cell with two or three live neighbors lives on to the next generation.
+     *Any live cell with more than three live neighbors dies from overcrowding.
+     *Any dead cell with exactly three live neighbors becomes a live cell, as if by reproduction.
      */
     private static int gameOfLifeRules(int aliveNeighbours, int alive)
     {
-        //Any live cell with two or three live neighbors lives on to the next generation where it is already alive.
+        
         int aliveOrNot = alive;
-        //Any live cell with fewer than two live neighbors dies, as if by under population.
+        //Any live cell with fewer than two live neighbors dies from isolation.
         if (aliveNeighbours < 2 && alive == 1)
         {
             aliveOrNot = 0;
         }
-        //Any live cell with more than three live neighbors dies, as if by overpopulation.
+        //Any live cell with more than three live neighbors dies from overcrowding.
         else if (aliveNeighbours > 3 && alive == 1)
         {
             aliveOrNot = 0;
@@ -113,13 +88,7 @@ class StateGenerator
     }
 
     /**
-     * Organizes an evolution process by inputting the original generation of collective states
-     * and returns a new generation of collective states.
-     * @param originalGeneration the generation of collective cells,
-     *                           the state of which neighbours (adjacent cells) will be counted
-     *                           and evaluated against the rules
-     * @param side  the width and height of grid cells on a game board
-     * @return a new collection of the state of the cells after applying the rules for a survival
+     * Generates the new collective states based on rules.
      */
     private static int[][] evolutionProcess(int[][] originalGeneration, int side)
     {
